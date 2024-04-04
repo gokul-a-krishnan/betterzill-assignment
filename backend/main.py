@@ -1,14 +1,22 @@
-from dotenv import load_dotenv
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
+from model import llm_processor
+import shutil
+from uuid import uuid4
+import os
+
 from pydantic import BaseModel
 from typing import Any
 
-# Load environment variables from .env file (if any)
-load_dotenv()
+from fastapi import FastAPI, File, UploadFile
+from fastapi.middleware.cors import CORSMiddleware
+
+UPLOAD_DIR = "uploads"
+if not os.path.exists(UPLOAD_DIR):
+    os.makedirs(UPLOAD_DIR)
+
 
 class Response(BaseModel):
     result: str | None
+
 
 origins = [
     "http://localhost",
@@ -26,9 +34,23 @@ app.add_middleware(
 )
 
 
-@app.post("/predict", response_model = Response)
-def predict() -> Any:
-  
-  #implement this code block
-  
-  return {"result": "hello world!"}
+class PredictBody(BaseModel):
+    query: str
+    filename: str
+
+
+@app.post("/predict")
+async def predict(req: PredictBody) -> Any:
+    result = llm_processor(
+        f"{UPLOAD_DIR}/{req.filename}", req.filename.split(".")[-1], req.query)
+    result = "".join(result.split("Answer:")[1:])
+    return {"result": result}
+
+
+@app.post("/upload")
+async def upload(file: UploadFile = File()):
+    filetype = file.filename.split(".")[-1]
+    filename = f"{uuid4()}.{filetype}"
+    with open(f"{UPLOAD_DIR}/{filename}", "wb") as newfile:
+        shutil.copyfileobj(file.file, newfile)
+    return {"message": "ok", "filename": filename, "filetype": filetype}
