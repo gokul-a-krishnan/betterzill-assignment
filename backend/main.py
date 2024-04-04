@@ -21,7 +21,8 @@ class Response(BaseModel):
 origins = [
     "http://localhost",
     "http://localhost:8080",
-    "http://localhost:3000"
+    "http://localhost:3000",
+    "http://122.165.141.89:8888",
 ]
 
 app = FastAPI()

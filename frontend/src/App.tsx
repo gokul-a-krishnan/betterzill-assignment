@@ -40,9 +40,13 @@ function App() {
     const formData = new FormData();
     formData.append("file", file);
 
-    const res = await axios.post("http://localhost:8000/upload", formData, {
-      headers: { "Content-Type": "multipart/form-data" },
-    });
+    const res = await axios.post(
+      "http://122.165.141.89:8000/upload",
+      formData,
+      {
+        headers: { "Content-Type": "multipart/form-data" },
+      }
+    );
 
     const { filetype, filename } = res.data;
 
@@ -58,7 +62,7 @@ function App() {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
-    const response = await axios.post("http://localhost:8000/predict", {
+    const response = await axios.post("http://122.165.141.89:8000/predict", {
       query: inputText,
       filename: iconData.secretname,
     });
