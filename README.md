@@ -1,5 +1,15 @@
 # ProtonDatalabs AI developer Assignment - Chatbot application
 
+## About Application
+
+I Built on top of base code provided. I included `Requirements.txt` for backend and `package.json` for frontend dependencies. Installing those dependencies will fulfill the requirements.
+
+1. This Application `doesn't uses OpenAI API`.
+2. We can deploy on-prem or in cloud and we can finetune based on Industry needs.
+3. It's a local llm it `requires GPU`.
+
+Given period of time I implemented minimum viable product. Doesnt handle edge cases.
+
 ## Preface
 
 At ProtonDatalabs, we leverage cutting-age gen-AI solutions to deliver buisness value to our clients. We are able to do this by combining aspects from AI modelling to full-stack developement.
